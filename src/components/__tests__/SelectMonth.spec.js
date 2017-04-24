@@ -15,4 +15,5 @@ describe('SelectMonth', () => {
     expect(fourthElementSelected).toBe(true)
   })
   it('should fire the onOptionChange prop passing the value selected')
+  it('should give an error if I enter an invalid date')
 })
