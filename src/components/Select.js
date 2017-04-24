@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Select = ({options, name, id, selected, onOptionChange}) => (
+const Select = ({options, name, id, selected, transformValue, onOptionChange}) => (
   <select name={name} value={selected} onChange={onOptionChange} id={id} >
     {
       options.map((option, i) => (
