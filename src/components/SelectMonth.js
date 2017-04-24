@@ -5,8 +5,8 @@ const months = (
   .split(' ')
 )
 
-export default ({}) => (
-  <select name='Month'>
+const SelectMonth = ({selected, onOptionChange}) => (
+  <select name='Month' value={selected} onChange={onOptionChange} >
     {
       months.map((month, i) => (
         <option key={i} value={i}>{month}</option>
@@ -14,3 +14,5 @@ export default ({}) => (
     }
   </select>
 )
+
+export default SelectMonth
