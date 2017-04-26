@@ -4,6 +4,6 @@ import App from './App';
 import './index.css';
 
 ReactDOM.render(
-  <App date='2017-12-21' />,
+  <App onChange={(val)=>{console.log(val)}}/>,
   document.getElementById('root')
 );
