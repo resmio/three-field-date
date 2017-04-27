@@ -1,15 +1,17 @@
-import '@resmio/rollico/dist/rollico.css'
 import React from 'react'
 import PropTypes from 'prop-types'
 import { css } from 'glamor'
 import { colors } from '@resmio/rollico/dist'
 
-const field = css({
+const field = (hasError) => css({
   background: colors.white,
   fontSize: '1em',
   height: '2.4em',
   color: colors.dustyGray,
-  flexBasis: '32%'
+  borderColor: hasError ? colors.amaranth : colors.dustyGray,
+  ':focus': {
+    outline: 'none'
+  }
 })
 
 const Select = ({
@@ -18,9 +20,10 @@ const Select = ({
   onOptionChange,
   options,
   selected,
-  values
+  values,
+  hasError
 }) => (
-  <select {...field} name={name} value={selected} onChange={onOptionChange} id={id} >
+  <select {...field(hasError)} name={name} value={selected} onChange={onOptionChange} id={id} >
     <option value={0}>{name}</option>
     {
       options.map((option, i) => (

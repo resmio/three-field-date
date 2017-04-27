@@ -1,12 +1,27 @@
 import React, { Component } from 'react'
-import {css} from 'glamor'
+import {css, merge, select as $} from 'glamor'
+
+import '@resmio/rollico/dist/rollico.css'
+import { colors } from '@resmio/rollico/dist'
+
 import Select from './components/Select'
 
-
 const container = css({
-  background: 'red',
   display: 'flex',
-  justifyContent: 'space-around'
+  justifyContent: 'space-between'
+})
+
+const margins = $(
+  '& select:first-of-type + select',
+  {
+    marginRight: '.3em',
+    marginLeft: '.3em'
+  }
+)
+
+const error = css({
+  fontSize: '0.9em',
+  color: colors.amaranth
 })
 
 // -----------------------------------------------------------------------------
@@ -106,6 +121,7 @@ class App extends Component {
         options={days}
         selected={this.state.date.day}
         onOptionChange={this.handleInputChange}
+        hasError={this.state.errors.day}
       />
     )
     const month = (
@@ -116,25 +132,26 @@ class App extends Component {
         values={[...Array(13).keys()].slice(1)}
         selected={this.state.date.month}
         onOptionChange={this.handleInputChange}
+        hasError={this.state.errors.month}
       />
     )
 
     return (
-      <div {...container}>
-        { this.props.monthFirst ? month : day }
-        { this.props.monthFirst ? day : month }
-        <Select
-          name='Year'
-          id='year'
-          options={years}
-          selected={this.state.date.year}
-          onOptionChange={this.handleInputChange}
-          optionsAsValues
-        />
-        <span style={{ color: 'red' }}>{ this.state.errors.day && 'Day required' }</span>
-        <span style={{ color: 'red' }}>{ this.state.errors.month && 'Month required' }</span>
-        <span style={{ color: 'red' }}>{ this.state.errors.year && 'Year required' }</span>
-        <span style={{ color: 'red' }}>{ this.state.errors.invalid && 'Invalid Date' }</span>
+      <div>
+        <div {...merge(container, margins)}>
+          { this.props.monthFirst ? month : day }
+          { this.props.monthFirst ? day : month }
+          <Select
+            name='Year'
+            id='year'
+            options={years}
+            selected={this.state.date.year}
+            onOptionChange={this.handleInputChange}
+            hasError={this.state.errors.year}
+            optionsAsValues
+          />
+        </div>
+        <div {...error}>{ this.state.errors.invalid && 'Please provide a valid date' }</div>
       </div>
     );
   }
