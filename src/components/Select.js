@@ -1,12 +1,14 @@
+import '@resmio/rollico/dist/rollico.css'
 import React from 'react'
 import PropTypes from 'prop-types'
-import {css} from 'glamor'
+import { css } from 'glamor'
+import { colors } from '@resmio/rollico/dist'
 
 const field = css({
-  background: '#fff',
+  background: colors.white,
   fontSize: '1em',
   height: '2.4em',
-  color: '#aaa',
+  color: colors.dustyGray,
   flexBasis: '32%'
 })
 
