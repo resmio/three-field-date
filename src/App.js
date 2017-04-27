@@ -14,76 +14,83 @@ const days = [...Array(31+1).keys()].slice(1)
 
 const getPastYears = yearsBack => {
   const currentYear = new Date().getFullYear()
-  const years = [...Array(yearsBack + 1).keys()].map( num => currentYear - num)
+  const years = [...Array(yearsBack + 1).keys()].map(num => currentYear - num)
   return years
 }
 
 const years = getPastYears(120)
 
 const getDayFromDate = date => new Date(date).getDate()
-const getMonthFromDate = date => new Date(date).getMonth() + 1
+const getMonthFromDate = date => new Date(date).getMonth()
 const getYearFromDate = date => new Date(date).getFullYear()
 
-const isValidDate = (day, month, year) => {
-  const testDate = new Date(year, month, day)
+// -----------------------------------------------------------------------------
+//                                Validations
+// -----------------------------------------------------------------------------
+const isValidDate = (date) => {
+  const testDate = new Date(date.year, date.month - 1, date.day)
   return (
-    testDate.getDate() === day
-    && testDate.getMonth() === month - 1
-    && testDate.getFullYear === year
+    testDate.getDate() === date.day
+    && testDate.getMonth() === date.month - 1
+    && testDate.getFullYear() === date.year
   )
 }
 
-// props:
-// date
-// format
-// date getter (onChange)
+const validate = (date) => {
+  const errors = {}
+  if (date.day === 0) { errors.day = true }
+  if (date.month === 0) { errors.month = true }
+  if (date.year === 0) { errors.year = true }
+  if (!isValidDate(date)) { errors.invalid = true }
+  return errors
+}
 
 // -----------------------------------------------------------------------------
 //                              Container
 // -----------------------------------------------------------------------------
+
+// props:
+//  - date
+//  - format
+//  - date getter (onChange)
+
 class App extends Component {
   state = {
-    month: -1,
-    day: 0,
-    year: 0,
-    isValid: false
+    date: {
+      month: -1,
+      day: 0,
+      year: 0
+    },
+    errors: {
+    }
   }
 
-  handleYearChange = evt => {
-    const newYear = parseInt(evt.target.value)
-    this.setState({
-      year: newYear,
-      isValid: isValidDate(this.state.day, this.state.month, newYear)
-    })
-    this.props.onChange(this.state)
+  handleInputChange = evt => {
+    const date = this.state.date
+    date[evt.target.id] = parseInt(evt.target.value, 10)
+    const errors = validate(date)
+    this.setState({date, errors})
   }
 
-  handleMonthChange = evt => {
-    const newMonth = parseInt(evt.target.value, 10) - 1
-    this.setState({
-      month: newMonth,
-      isValid: isValidDate(this.state.day, newMonth, this.state.year)
-    })
-    this.props.onChange(this.state)
-  }
+  // getSelectedYear = () => this.state.date.year - getYearFromDate(new Date()) + 1
 
-  handleDayChange = evt => {
-    const newDay = parseInt(evt.target.value, 10)
-    this.setState({
-      day: newDay,
-      isValid: isValidDate(newDay, this.state.month, this.state.year)
-    })
-    this.props.onChange(this.state)
-  }
-
-  getSelectedYear = () => this.state.year - getYearFromDate(new Date()) + 1
-
+// If we get a date as a prop we assign it to the state
   componentWillMount() {
     this.props.date && this.setState({
-      day: getDayFromDate(this.props.date),
-      month: getMonthFromDate(this.props.date),
-      year: getYearFromDate(this.props.date)
+      date: {
+        day: getDayFromDate(this.props.date),
+        // Month is 0 based so we need to add 1 here
+        month: getMonthFromDate(this.props.date) + 1,
+        year: getYearFromDate(this.props.date)
+      }
     })
+  }
+
+  // // Emit the state up after it changes
+  componentDidUpdate() {
+    if (isValidDate(this.state.date)) {
+      this.props.onChange({date: this.state.date})
+    }
   }
 
   render() {
@@ -93,25 +100,29 @@ class App extends Component {
           name='Day'
           id='day'
           options={days}
-          selected={this.state.day}
-          onOptionChange={this.handleDayChange}
+          selected={this.state.date.day}
+          onOptionChange={this.handleInputChange}
         />
         <Select
           name='Month'
           id='month'
           options={months}
-          values={[...Array(12).keys()].slice(1)}
-          selected={this.state.month + 1}
-          onOptionChange={this.handleMonthChange}
+          values={[...Array(13).keys()].slice(1)}
+          selected={this.state.date.month}
+          onOptionChange={this.handleInputChange}
         />
         <Select
           name='Year'
           id='year'
           options={years}
-          selected={this.state.year}
-          onOptionChange={this.handleYearChange}
+          selected={this.state.date.year}
+          onOptionChange={this.handleInputChange}
           optionsAsValues
         />
+        <span style={{ color: 'red' }}>{ this.state.errors.day && 'Day required' }</span>
+        <span style={{ color: 'red' }}>{ this.state.errors.month && 'Month required' }</span>
+        <span style={{ color: 'red' }}>{ this.state.errors.year && 'Year required' }</span>
+        <span style={{ color: 'red' }}>{ this.state.errors.invalid && 'Invalid Date' }</span>
       </div>
     );
   }
