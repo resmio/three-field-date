@@ -1,5 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import {css} from 'glamor'
+
+const field = css({
+  background: '#fff',
+  fontSize: '1em',
+  height: '2.4em',
+  color: '#aaa',
+  flexBasis: '32%'
+})
 
 const Select = ({
   id,
@@ -9,7 +18,7 @@ const Select = ({
   selected,
   values
 }) => (
-  <select name={name} value={selected} onChange={onOptionChange} id={id} >
+  <select {...field} name={name} value={selected} onChange={onOptionChange} id={id} >
     <option value={0}>{name}</option>
     {
       options.map((option, i) => (

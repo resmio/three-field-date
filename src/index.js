@@ -4,6 +4,10 @@ import App from './App';
 import './index.css';
 
 ReactDOM.render(
-  <App date='2016-12-12' monthFirst onChange={(val)=>{console.log(val)}}/>,
+  <App
+    date='2016-12-12'
+    onChange={(val)=>{console.log(val)}}
+    monthFirst
+  />,
   document.getElementById('root')
 );

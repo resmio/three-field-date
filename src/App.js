@@ -1,6 +1,13 @@
-import React, { Component } from 'react';
-import './App.css';
+import React, { Component } from 'react'
+import {css} from 'glamor'
 import Select from './components/Select'
+
+
+const container = css({
+  background: 'red',
+  display: 'flex',
+  justifyContent: 'space-around'
+})
 
 // -----------------------------------------------------------------------------
 //                        Date Generation Logic
@@ -51,7 +58,7 @@ const validate = (date) => {
 
 // props:
 //  - date
-//  - format
+//  - monthFirst :Boolean
 //  - date getter (onChange)
 
 class App extends Component {
@@ -113,7 +120,7 @@ class App extends Component {
     )
 
     return (
-      <div>
+      <div {...container}>
         { this.props.monthFirst ? month : day }
         { this.props.monthFirst ? day : month }
         <Select
