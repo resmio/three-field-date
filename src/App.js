@@ -88,29 +88,34 @@ class App extends Component {
 
   // // Emit the state up after it changes
   componentDidUpdate() {
-    if (isValidDate(this.state.date)) {
-      this.props.onChange({date: this.state.date})
-    }
+    this.props.onChange(this.state)
   }
 
   render() {
+    const day = (
+      <Select
+        name='Day'
+        id='day'
+        options={days}
+        selected={this.state.date.day}
+        onOptionChange={this.handleInputChange}
+      />
+    )
+    const month = (
+      <Select
+        name='Month'
+        id='month'
+        options={months}
+        values={[...Array(13).keys()].slice(1)}
+        selected={this.state.date.month}
+        onOptionChange={this.handleInputChange}
+      />
+    )
+
     return (
       <div>
-        <Select
-          name='Day'
-          id='day'
-          options={days}
-          selected={this.state.date.day}
-          onOptionChange={this.handleInputChange}
-        />
-        <Select
-          name='Month'
-          id='month'
-          options={months}
-          values={[...Array(13).keys()].slice(1)}
-          selected={this.state.date.month}
-          onOptionChange={this.handleInputChange}
-        />
+        { this.props.monthFirst ? month : day }
+        { this.props.monthFirst ? day : month }
         <Select
           name='Year'
           id='year'
