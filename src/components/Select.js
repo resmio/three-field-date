@@ -33,8 +33,23 @@ const Select = ({
   </select>
 )
 
+const {
+  arrayOf,
+  bool,
+  func,
+  number,
+  oneOfType,
+  string
+} = PropTypes
+
 Select.propTypes = {
-  id: PropTypes.string
+  hasError: bool,
+  id: string,
+  name: string,
+  onOptionChange: func.isRequired,
+  options: arrayOf(oneOfType([string, number])).isRequired,
+  selected: oneOfType([string,number]),
+  values: arrayOf(oneOfType([string, number]))
 }
 
 export default Select
