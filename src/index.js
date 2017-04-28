@@ -1,10 +1,9 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import './index.css';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import DateSelector from './components/DateSelector'
 
 ReactDOM.render(
-  <App
+  <DateSelector
     date='2016-12-12'
     onChange={(val)=>{console.log(val)}}
     monthFirst

@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
+import '@resmio/rollico/dist/rollico.css'
+
 import {css, merge, select as $} from 'glamor'
 
-import '@resmio/rollico/dist/rollico.css'
 import { colors } from '@resmio/rollico/dist'
 
-import Select from './components/Select'
+import Select from './Select'
 
 const container = css({
   display: 'flex',
@@ -76,7 +77,7 @@ const validate = (date) => {
 //  - monthFirst :Boolean
 //  - date getter (onChange)
 
-class App extends Component {
+class DateSelector extends Component {
   state = {
     date: {
       month: -1,
@@ -157,4 +158,4 @@ class App extends Component {
   }
 }
 
-export default App
+export default DateSelector
