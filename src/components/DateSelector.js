@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
-import '@resmio/rollico/dist/rollico.css'
-import {css, merge, select as $} from 'glamor'
-
-import { colors } from '@resmio/rollico/dist'
+import { container, error } from './DateSelector.styles'
 
 import {
+  isValidDate,
   getDayFromDate,
   getMonthFromDate,
   getPastYears,
@@ -13,24 +11,6 @@ import {
 } from '../libs/dates'
 
 import Select from './Select'
-
-const container = css({
-  display: 'flex',
-  justifyContent: 'space-between'
-})
-
-const margins = $(
-  '& select:first-of-type + select',
-  {
-    marginRight: '.3em',
-    marginLeft: '.3em'
-  }
-)
-
-const error = css({
-  fontSize: '0.9em',
-  color: colors.amaranth
-})
 
 // -----------------------------------------------------------------------------
 //                        Date Generation Logic
@@ -43,16 +23,7 @@ const years = getPastYears(actualYear, 120)
 // -----------------------------------------------------------------------------
 //                                Validations
 // -----------------------------------------------------------------------------
-const isValidDate = (date) => {
-  const testDate = new Date(date.year, date.month - 1, date.day)
-  return (
-    testDate.getDate() === date.day
-    && testDate.getMonth() === date.month - 1
-    && testDate.getFullYear() === date.year
-  )
-}
-
-const validate = (date) => {
+const validate = date => {
   const errors = {}
   if (date.day === 0) { errors.day = true }
   if (date.month === 0) { errors.month = true }
@@ -65,9 +36,9 @@ const validate = (date) => {
 //                              Container
 // -----------------------------------------------------------------------------
 
-// props:
+// Props:
 //  - date
-//  - monthFirst :Boolean
+//  - monthBeforeDay :Boolean
 //  - date getter (onChange)
 
 class DateSelector extends Component {
@@ -87,8 +58,6 @@ class DateSelector extends Component {
     const errors = validate(date)
     this.setState({date, errors})
   }
-
-  // getSelectedYear = () => this.state.date.year - getYearFromDate(new Date()) + 1
 
 // If we get a date as a prop we assign it to the state
   componentWillMount() {
@@ -132,9 +101,9 @@ class DateSelector extends Component {
 
     return (
       <div>
-        <div {...merge(container, margins)}>
-          { this.props.monthFirst ? month : day }
-          { this.props.monthFirst ? day : month }
+        <div {...container}>
+          { this.props.monthBeforeDay ? month : day }
+          { this.props.monthBeforeDay ? day : month }
           <Select
             name='Year'
             id='year'
