@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { container, error } from './DateSelector.styles'
+import styles from './DateSelector.styles'
+import Select from './Select'
 
 import {
   isValidDate,
@@ -10,19 +11,12 @@ import {
   MONTH_NAMES
 } from '../libs/dates'
 
-import Select from './Select'
-
-// -----------------------------------------------------------------------------
-//                        Date Generation Logic
-// -----------------------------------------------------------------------------
-
+// Date Generation
 const days = [...Array(31+1).keys()].slice(1)
 const actualYear = getYearFromDate(new Date())
-const years = getPastYears(actualYear, 120)
+const years = getPastYears(120, actualYear)
 
-// -----------------------------------------------------------------------------
-//                                Validations
-// -----------------------------------------------------------------------------
+// Validation
 const validate = date => {
   const errors = {}
   if (date.day === 0) { errors.day = true }
@@ -32,14 +26,11 @@ const validate = date => {
   return errors
 }
 
-// -----------------------------------------------------------------------------
-//                              Container
-// -----------------------------------------------------------------------------
-
-// Props:
-//  - date
-//  - monthBeforeDay :Boolean
-//  - date getter (onChange)
+// Component
+//  - Props:
+//      - date :Date
+//      - monthBeforeDay :Boolean
+//      - onChange :Func
 
 class DateSelector extends Component {
   state = {
@@ -101,7 +92,7 @@ class DateSelector extends Component {
 
     return (
       <div>
-        <div {...container}>
+        <div {...styles.container}>
           { this.props.monthBeforeDay ? month : day }
           { this.props.monthBeforeDay ? day : month }
           <Select
@@ -114,7 +105,7 @@ class DateSelector extends Component {
             optionsAsValues
           />
         </div>
-        <div {...error}>{ this.state.errors.invalid && 'Please provide a valid date' }</div>
+        <div {...styles.error}>{ this.state.errors.invalid && 'Please provide a valid date' }</div>
       </div>
     );
   }

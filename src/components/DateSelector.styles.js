@@ -14,9 +14,14 @@ const _margins = $(
   }
 )
 
-export const container = merge(_containerBase, _margins)
+const styles = {
+  container: merge(
+    _containerBase, _margins
+  ),
+  error: css({
+    fontSize: '0.9em',
+    color: colors.amaranth
+  })
+}
 
-export const error = css({
-  fontSize: '0.9em',
-  color: colors.amaranth
-})
+export default styles

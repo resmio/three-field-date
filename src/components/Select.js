@@ -1,18 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { css } from 'glamor'
-import { colors } from '@resmio/rollico/dist'
-
-const field = (hasError) => css({
-  background: colors.white,
-  fontSize: '1em',
-  height: '2.4em',
-  color: colors.dustyGray,
-  borderColor: hasError ? colors.amaranth : colors.dustyGray,
-  ':focus': {
-    outline: 'none'
-  }
-})
+import styles from './Select.styles'
 
 const Select = ({
   id,
@@ -23,7 +11,7 @@ const Select = ({
   values,
   hasError
 }) => (
-  <select {...field(hasError)} name={name} value={selected} onChange={onOptionChange} id={id} >
+  <select {...styles.field(hasError)} name={name} value={selected} onChange={onOptionChange} id={id} >
     <option value={0}>{name}</option>
     {
       options.map((option, i) => (
