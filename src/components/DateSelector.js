@@ -1,9 +1,16 @@
 import React, { Component } from 'react'
 import '@resmio/rollico/dist/rollico.css'
-
 import {css, merge, select as $} from 'glamor'
 
 import { colors } from '@resmio/rollico/dist'
+
+import {
+  getDayFromDate,
+  getMonthFromDate,
+  getPastYears,
+  getYearFromDate,
+  MONTH_NAMES
+} from '../libs/dates'
 
 import Select from './Select'
 
@@ -28,24 +35,10 @@ const error = css({
 // -----------------------------------------------------------------------------
 //                        Date Generation Logic
 // -----------------------------------------------------------------------------
-const months = (
-  'January February March April May June July August September October November December'
-  .split(' ')
-)
 
 const days = [...Array(31+1).keys()].slice(1)
-
-const getPastYears = yearsBack => {
-  const currentYear = new Date().getFullYear()
-  const years = [...Array(yearsBack + 1).keys()].map(num => currentYear - num)
-  return years
-}
-
-const years = getPastYears(120)
-
-const getDayFromDate = date => new Date(date).getDate()
-const getMonthFromDate = date => new Date(date).getMonth()
-const getYearFromDate = date => new Date(date).getFullYear()
+const actualYear = getYearFromDate(new Date())
+const years = getPastYears(actualYear, 120)
 
 // -----------------------------------------------------------------------------
 //                                Validations
@@ -129,7 +122,7 @@ class DateSelector extends Component {
       <Select
         name='Month'
         id='month'
-        options={months}
+        options={MONTH_NAMES}
         values={[...Array(13).keys()].slice(1)}
         selected={this.state.date.month}
         onOptionChange={this.handleInputChange}
